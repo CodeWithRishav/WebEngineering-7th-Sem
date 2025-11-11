@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Engineering Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 130px;
+            width: 280px;
+            height: calc(100vh - 130px);
+            background: #f8f9fa;
+            overflow-y: auto;
+            padding: 1.5rem;
+            border-right: 3px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-280px);
+        }
+
+        .sidebar h3 {
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.8rem;
+        }
+
+        .sidebar a {
+            color: #555;
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 0.8rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .sidebar a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar a.active {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            left: 10px;
+            top: 140px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 101;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #667eea;
+        }
+
+        .content {
+            margin-left: 280px;
+            padding: 3rem;
+            transition: margin-left 0.3s ease;
+        }
+
+        .content.expanded {
+            margin-left: 0;
+        }
+
+        .unit {
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .unit-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .unit-header:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .unit-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .section h3 {
+            color: #1e3c72;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section h4 {
+            color: #2a5298;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .highlight-box {
+            background: #e8f4f8;
+            border-left: 4px solid #2196F3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        .key-point {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .example {
+            background: #f0f7ff;
+            border-left: 4px solid #4CAF50;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        .example strong {
+            color: #4CAF50;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .comparison-item h5 {
+            color: #1e3c72;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .summary-box h4 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-280px);
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-top:hover {
+            background: #1e3c72;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="container">
+        <header>
+            <h1>📚 Comprehensive Study Notes on Web Engineering</h1>
+            <p>Your Complete Guide to Modern Web Development</p>
+        </header>
+
+        <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+        <nav class="sidebar" id="sidebar">
+            <h3>📑 Table of Contents</h3>
+            <ul>
+                <li><a href="#unit1" onclick="smoothScroll('unit1')">Unit 1: Introduction to Web Engineering</a></li>
+                <li><a href="#unit2" onclick="smoothScroll('unit2')">Unit 2: Web Application Design</a></li>
+                <li><a href="#unit3" onclick="smoothScroll('unit3')">Unit 3: Development Concepts</a></li>
+                <li><a href="#unit4" onclick="smoothScroll('unit4')">Unit 4: Testing Web Applications</a></li>
+                <li><a href="#unit5" onclick="smoothScroll('unit5')">Unit 5: Promoting & Project Management</a></li>
+            </ul>
+        </nav>
+
+        <main class="content" id="content">
+            <!-- UNIT 1 -->
+            <div class="unit" id="unit1">
+                <div class="unit-header">
+                    <h2>Unit 1: Introduction to Web Engineering</h2>
+                    <p>Understanding the Foundation of Modern Web Development</p>
+                </div>
+
+                <div class="section">
+                    <h3>1.1 The Foundation: Understanding Web Engineering</h3>
+                    <p>Web Engineering provides a systematic, disciplined, and quantifiable approach to the development, operation, and maintenance of modern web-based applications. In today's digital landscape, web applications are no longer simple informational pages but complex systems that drive business, education, and entertainment.</p>
+                    
+                    <div class="key-point">
+                        <strong>Key Insight:</strong> The strategic importance of Web Engineering lies in its ability to manage complexity. It introduces a structured methodology that ensures applications are not only functional but also meet high standards of quality, security, performance, and scalability.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>1.2 The Motivation: Why Web Engineering is Essential</h3>
+                    <p>A formal Web Engineering process is necessary to address the significant demands placed on modern web applications.</p>
+                    
+                    <div class="highlight-box">
+                        <h4>Primary Motivations:</h4>
+                        <ul>
+                            <li><strong>Quality:</strong> Develop robust, reliable, and user-friendly web applications that meet user expectations and business goals</li>
+                            <li><strong>Complexity:</strong> Effectively manage intricate architecture, features, and user interactions in today's applications</li>
+                            <li><strong>Security & Performance:</strong> Build applications that are secure from cyber threats and perform efficiently under heavy traffic</li>
+                            <li><strong>Scalability:</strong> Ensure applications can grow and handle increasing users and data without performance decline</li>
+                            <li><strong>Development and Maintenance Cost:</strong> Reduce long-term costs through structured processes that minimize errors</li>
+                        </ul>
+                    </div>
+
+                    <div class="key-point">
+                        <strong>Summary:</strong> Modern websites are not just for displaying information; they are built to run entire businesses. Therefore, it's essential to approach web development with proper processes and planning, which is the core of Web Engineering.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>1.3 Categories of Web Applications</h3>
+                    <p>Web applications can be classified into several categories based on their primary function and user interaction model.</p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Example</th>
+                                <th>Explanation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Informational Websites</td>
+                                <td>Wikipedia, News Sites</td>
+                                <td>Primarily used for sharing information</td>
+                            </tr>
+                            <tr>
+                                <td>Interactive Websites</td>
+                                <td>Social Media, Forums</td>
+                                <td>Allow users to interact with each other and the platform</td>
+                            </tr>
+                            <tr>
+                                <td>Transactional Websites</td>
+                                <td>Amazon, Flipkart, Banking portals</td>
+                                <td>Facilitate buying, selling, and financial transactions</td>
+                            </tr>
+                            <tr>
+                                <td>Collaborative Applications</td>
+                                <td>Google Docs, GitHub</td>
+                                <td>Enable multiple users to work together on shared tasks</td>
+                            </tr>
+                            <tr>
+                                <td>Portal Websites</td>
+                                <td>Government Portals, ERP Systems</td>
+                                <td>Provide single point of access to multiple services</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>1.4 Core Characteristics of Web Applications</h3>
+                    <p>Web applications possess several distinct characteristics that differentiate them from traditional desktop software:</p>
+                    
+                    <div class="highlight-box">
+                        <ul>
+                            <li><strong>Network Based:</strong> They run over the internet and are accessed via a web browser</li>
+                            <li><strong>Available 24/7:</strong> Users can access them at any time from anywhere in the world</li>
+                            <li><strong>Platform Independent:</strong> They can run on any operating system (Windows, macOS, Linux) with a compatible browser</li>
+                            <li><strong>Dynamic and Interactive:</strong> Content can change based on user input, and the interface is designed for active engagement</li>
+                            <li><strong>Frequent Updates:</strong> They can be updated and deployed frequently without requiring users to install new software</li>
+                            <li><strong>Security Required:</strong> They require robust security measures like authentication and authorization to protect user data</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>1.5 The Necessity of an Engineering Approach</h3>
+                    <p>Without a structured plan, the development of a complex web application can quickly become "messy," leading to code that is difficult to maintain, scale, and secure.</p>
+                    
+                    <div class="key-point">
+                        <strong>Why Engineering Approach?</strong> It introduces discipline and predictability into the development lifecycle.
+                    </div>
+
+                    <h4>Key Activities:</h4>
+                    <ul>
+                        <li><strong>Requirements Gathering:</strong> Understanding and documenting user needs and business goals</li>
+                        <li><strong>Architecture Planning:</strong> Designing the application's underlying structure and technology stack</li>
+                        <li><strong>Security Implementation:</strong> Integrating security measures from the start of the project</li>
+                        <li><strong>Testing:</strong> Systematically finding and fixing bugs to ensure quality</li>
+                        <li><strong>Maintenance:</strong> Planning for ongoing updates, improvements, and bug fixes after launch</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3>1.6 Key Components and Process Flow</h3>
+                    
+                    <h4>Core Components of Web Engineering</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Requirements Engineering</td>
+                                <td>Identifying and defining user needs and system requirements</td>
+                            </tr>
+                            <tr>
+                                <td>Design</td>
+                                <td>Planning the layout, architecture, and user interface (UI)</td>
+                            </tr>
+                            <tr>
+                                <td>Development</td>
+                                <td>Writing the code (HTML, CSS, JS, Backend, Database)</td>
+                            </tr>
+                            <tr>
+                                <td>Testing</td>
+                                <td>Finding and removing bugs and errors from the website</td>
+                            </tr>
+                            <tr>
+                                <td>Deployment</td>
+                                <td>Publishing the application on a live server</td>
+                            </tr>
+                            <tr>
+                                <td>Maintenance</td>
+                                <td>Implementing updates, enhancements, and ongoing improvements</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="highlight-box">
+                        <h4>Web Engineering Process Flow</h4>
+                        <p style="text-align: center; font-size: 1.2rem; font-weight: bold;">
+                            Communication → Planning → Modeling → Construction → Deployment → Maintenance
+                        </p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>1.7 Differentiating Key Web Concepts</h3>
+                    
+                    <h4>Static vs. Dynamic Web Pages</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Static Web Page</th>
+                                <th>Dynamic Web Page</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Content</td>
+                                <td>Fixed; the same for every user</td>
+                                <td>Changes based on user input or database information</td>
+                            </tr>
+                            <tr>
+                                <td>Technology</td>
+                                <td>HTML, CSS</td>
+                                <td>HTML, CSS, JavaScript, and backend language (PHP/Node/Java)</td>
+                            </tr>
+                            <tr>
+                                <td>Example</td>
+                                <td>Portfolio, Resume Website</td>
+                                <td>Facebook, Amazon</td>
+                            </tr>
+                            <tr>
+                                <td>Database</td>
+                                <td>No database interaction</td>
+                                <td>Yes, content is pulled from a database</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="key-point">
+                        <strong>Key Takeaway:</strong> Dynamic pages allow for personalized content, making the user experience more relevant and engaging.
+                    </div>
+
+                    <h4>Web Design vs. Web Development</h4>
+                    <div class="comparison">
+                        <div class="comparison-item">
+                            <h5>Web Design</h5>
+                            <ul>
+                                <li>Focuses on the look and feel of the website (UI/UX)</li>
+                                <li>Utilizes tools like Figma, Canva, and Photoshop</li>
+                                <li>Primarily concerned with the frontend (what the user sees)</li>
+                                <li>Designers create the visual layout and user experience</li>
+                            </ul>
+                        </div>
+                        <div class="comparison-item">
+                            <h5>Web Development</h5>
+                            <ul>
+                                <li>Focuses on the functionality and internal workings of the website</li>
+                                <li>Utilizes tools like VS Code, databases, and backend frameworks</li>
+                                <li>Involves both frontend and backend development</li>
+                                <li>Developers write the code that makes the layout functional</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>1.8 Introduction to APIs</h3>
+                    <p>An <strong>Application Programming Interface (API)</strong> is a mechanism that allows two separate software systems to communicate and exchange data with each other. It acts as a bridge, enabling one application to access the features or data of another in a controlled and standardized way.</p>
+                    
+                    <div class="example">
+                        <h4>Practical Applications of APIs:</h4>
+                        <ul>
+                            <li><strong>Google Maps API:</strong> Allows developers to embed Google Maps directly into their own applications</li>
+                            <li><strong>Payment API:</strong> Enables websites to integrate payment gateways like UPI or GPay for transactions</li>
+                            <li><strong>Weather API:</strong> Provides access to live weather data that can be displayed on a website or app</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="summary-box">
+                        <h4>1.9 Unit 1 Summary</h4>
+                        <ul>
+                            <li>Web Engineering is a disciplined approach focused on quality web application development</li>
+                            <li>Modern web applications are inherently dynamic, interactive, scalable, and secure</li>
+                            <li>A static page has fixed content, while a dynamic page is database-driven and personalized</li>
+                            <li>Web Design determines the look and feel, while Web Development builds the functionality</li>
+                            <li>An API acts as a connector, allowing one software application to communicate with another</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UNIT 2 -->
+            <div class="unit" id="unit2">
+                <div class="unit-header">
+                    <h2>Unit 2: Web Application Design</h2>
+                    <p>Planning the Structure and User Experience</p>
+                </div>
+
+                <div class="section">
+                    <h3>2.1 Principles of Web Application Design</h3>
+                    <p>Web Application Design is the critical phase of planning a web application's structure, content, presentation, and user interaction before any code is written. It is the architectural blueprint that guides the development process.</p>
+                    
+                    <div class="key-point">
+                        <strong>In Simple Terms:</strong> Before building a website, you must decide its layout, content, navigation, look and feel, and how a user will interact with it. This entire planning process is known as Web Application Design.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>2.2 The Evolution of Web Design</h3>
+                    <p>Web design has evolved significantly over the years, driven by advancements in technology and changing user expectations.</p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Generation</th>
+                                <th>Characteristics</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1st Gen</td>
+                                <td>Static HTML pages with basic formatting</td>
+                                <td>Personal blogs</td>
+                            </tr>
+                            <tr>
+                                <td>2nd Gen</td>
+                                <td>Introduction of CSS for better UI and visual styling</td>
+                                <td>Small business sites</td>
+                            </tr>
+                            <tr>
+                                <td>3rd Gen</td>
+                                <td>Dynamic, database-driven websites with interactive features</td>
+                                <td>Shopping websites</td>
+                            </tr>
+                            <tr>
+                                <td>4th Gen</td>
+                                <td>Rise of rich Web Apps, APIs, and cloud-based services</td>
+                                <td>Social Media & SaaS</td>
+                            </tr>
+                            <tr>
+                                <td>5th Gen (Now)</td>
+                                <td>AI-driven, highly personalized web applications</td>
+                                <td>Netflix, YouTube, ChatGPT</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="key-point">
+                        <strong>Key Idea:</strong> Design evolves as user expectations and technology evolve, pushing for more interactive and intelligent experiences.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>2.3 Information Design vs. Software Design</h3>
+                    <p>A successful web application requires a blend of two distinct design disciplines:</p>
+                    
+                    <div class="comparison">
+                        <div class="comparison-item">
+                            <h5>Information Design</h5>
+                            <p>Focuses on organizing and presenting content in a way that is clear, logical, and easy for users to understand. This includes:</p>
+                            <ul>
+                                <li>Defining the menu structure</li>
+                                <li>Content flow</li>
+                                <li>Ensuring overall readability</li>
+                            </ul>
+                        </div>
+                        <div class="comparison-item">
+                            <h5>Software Design</h5>
+                            <p>Focuses on the technical implementation of the application. This involves:</p>
+                            <ul>
+                                <li>Choosing programming languages</li>
+                                <li>Designing the database schema</li>
+                                <li>Planning backend logic and architecture</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="example">
+                        <strong>Example:</strong> An e-commerce website requires user-friendly product listings (Information Design) supported by a secure and efficient payment backend (Software Design).
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>2.4 Common Design Challenges</h3>
+                    <p>Integrating information and software design comes with unique challenges:</p>
+                    
+                    <div class="highlight-box">
+                        <ul>
+                            <li><strong>Browser Compatibility:</strong> Different browsers (Chrome, Firefox, Safari) may render UI elements differently</li>
+                            <li><strong>Device Variety:</strong> The design must work across mobile phones, tablets, and laptops</li>
+                            <li><strong>Network Speed:</strong> Users may have varying internet speeds affecting performance</li>
+                            <li><strong>Security:</strong> The design must account for potential security vulnerabilities</li>
+                            <li><strong>Technology Updates:</strong> Rapid technological change requires constant learning and adaptation</li>
+                        </ul>
+                    </div>
+
+                    <div class="key-point">
+                        <strong>In Simple Terms:</strong> Maintaining a smooth and consistent user experience for everyone is a significant challenge.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>2.5 Structuring the Design Process and Presentation</h3>
+                    
+                    <div class="highlight-box">
+                        <h4>Typical Design Workflow</h4>
+                        <p style="text-align: center; font-size: 1.1rem; font-weight: bold;">
+                            Requirement Analysis → Content Planning → Navigation Design → Interface Design → Testing → Deployment
+                        </p>
+                    </div>
+
+                    <h4>Presentation Design</h4>
+                    <p>Presentation Design deals with the visual aspects of web pages, focusing on elements like colors, fonts, layout, and buttons.</p>
+                    
+                    <div class="key-point">
+                        <strong>Primary Goal:</strong> To achieve clarity, simplicity, and user-friendliness.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>2.6 Modeling for Structure and Content</h3>
+                    
+                    <h4>Navigation Model</h4>
+                    <p>Defines the overall site structure:</p>
+                    <ul>
+                        <li><strong>Node:</strong> Represents an individual web page</li>
+                        <li><strong>Mesh:</strong> Represents the connections (links) between these pages</li>
+                    </ul>
+                    <div class="key-point">
+                        This ensures an organized navigation flow.
+                    </div>
+
+                    <h4>Content Modeling</h4>
+                    <p>Defines the different types of content that will exist on the application and how they relate to each other.</p>
+                    
+                    <div class="example">
+                        <strong>Example:</strong> On an e-commerce site, a single product page is composed of related content types like:
+                        <ul>
+                            <li>Product description</li>
+                            <li>Product images</li>
+                            <li>Product reviews</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>2.7 Modeling for Presentation and Interaction</h3>
+                    
+                    <h4>Presentation Modeling</h4>
+                    <p>Ensures a consistent user interface (UI) across all pages of the application. This includes using the same header, footer, color scheme, and font theme throughout the site.</p>
+
+                    <h4>Hypertext Modeling</h4>
+                    <p>Focuses on designing the clickable navigation structure. Its purpose is to ensure that users can move between pages easily and intuitively, without getting lost or confused.</p>
+
+                    <h4>Customization Modeling</h4>
+                    <p>Allows the application to deliver personalized content to different users.</p>
+                    
+                    <div class="example">
+                        <strong>Examples:</strong>
+                        <ul>
+                            <li>Amazon's product recommendations</li>
+                            <li>YouTube's suggested videos</li>
+                            <li>Tailored to individual browsing history</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>2.8 Design Frameworks and Languages</h3>
+                    
+                    <h4>Modeling Frameworks</h4>
+                    <p>Frameworks like <strong>React.js, Angular, Django, and Spring Boot</strong> provide a predefined structure and reusable components, which helps in building complex applications more efficiently.</p>
+
+                    <h4>Modeling Languages</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Language Used</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Content Model</td>
+                                <td>XML / JSON</td>
+                                <td>To store and organize structured data</td>
+                            </tr>
+                            <tr>
+                                <td>Structure Model</td>
+                                <td>UML (Unified Modeling Language)</td>
+                                <td>To create diagrams of the system's architecture and components</td>
+                            </tr>
+                            <tr>
+                                <td>Presentation Model</td>
+                                <td>HTML / CSS</td>
+                                <td>To design the final user interface and layout</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>2.9 Analysis, Content, Interaction, and Configuration Models</h3>
+                    
+                    <h4>Analysis Modeling</h4>
+                    <p>Goal: To gain a clear understanding of user needs, business requirements, use cases, and data flow before starting development.</p>
+
+                    <h4>The Content Model</h4>
+                    <p>Identifies and groups all the content types that will be part of the application.</p>
+                    <div class="example">
+                        <strong>Example:</strong> For a news website, this would include:
+                        <ul>
+                            <li>News Articles</li>
+                            <li>Categories</li>
+                            <li>Authors</li>
+                            <li>Comments</li>
+                        </ul>
+                    </div>
+
+                    <h4>The Interaction Model</h4>
+                    <p>Maps out all the ways a user can interact with the system, such as:</p>
+                    <ul>
+                        <li>Clicking a button</li>
+                        <li>Searching for an item</li>
+                        <li>Adding to cart</li>
+                        <li>Filling out a form</li>
+                    </ul>
+
+                    <h4>The Configuration Model</h4>
+                    <p>Defines the technical environment for the application, including:</p>
+                    <ul>
+                        <li>Hosting server</li>
+                        <li>Database server</li>
+                        <li>API endpoints</li>
+                        <li>Load balancing setup</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="summary-box">
+                        <h4>2.10 Unit 2 Summary</h4>
+                        <table style="background: rgba(255,255,255,0.1);">
+                            <thead>
+                                <tr>
+                                    <th>Concept</th>
+                                    <th>Meaning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Web Design</td>
+                                    <td>The process of planning the layout and UI before coding</td>
+                                </tr>
+                                <tr>
+                                    <td>Information Design</td>
+                                    <td>The art of arranging content for clarity and ease of use</td>
+                                </tr>
+                                <tr>
+                                    <td>Software Design</td>
+                                    <td>The technical planning of backend logic, databases, and code</td>
+                                </tr>
+                                <tr>
+                                    <td>Nodes & Meshes</td>
+                                    <td>Nodes are web pages, and Meshes are the links connecting them</td>
+                                </tr>
+                                <tr>
+                                    <td>Content Model</td>
+                                    <td>Defines what types of data exist in the application</td>
+                                </tr>
+                                <tr>
+                                    <td>Interaction Model</td>
+                                    <td>Maps out all possible user actions and system responses</td>
+                                </tr>
+                                <tr>
+                                    <td>Configuration Model</td>
+                                    <td>Defines the server setup and deployment environment</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UNIT 3 -->
+            <div class="unit" id="unit3">
+                <div class="unit-header">
+                    <h2>Unit 3: Development Concepts</h2>
+                    <p>Building Responsive and Interactive Applications</p>
+                </div>
+
+                <div class="section">
+                    <h3>3.1 Core Concepts in Modern Web Development</h3>
+                    <p>The development phase brings the design blueprint to life. Modern web development is not just about writing code; it's about building applications that are accessible on any device, intuitive to use, and functionally robust.</p>
+                    
+                    <div class="key-point">
+                        <strong>Key Focus:</strong> Building applications with seamless and consistent user experience, regardless of how or where the application is accessed.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>3.2 Device-Independent Development</h3>
+                    <p><strong>Device-Independent Development</strong> is the practice of building web applications that function correctly and look great on all types of devices, including mobiles, tablets, laptops, and smart TVs.</p>
+                    
+                    <div class="key-point">
+                        <strong>In Simple Terms:</strong> A website should display properly on every screen size. Whether viewed on a PC or a mobile phone, the user interface should not break or become distorted.
+                    </div>
+
+                    <h4>Techniques to Achieve Device Independence:</h4>
+                    <ul>
+                        <li>Use Responsive Web Design (RWD)</li>
+                        <li>Use CSS Flexbox and Grid</li>
+                        <li>Use Media Queries</li>
+                        <li>Use Scalable Images and Fonts</li>
+                    </ul>
+
+                    <h4>Approaches to Device Independence</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Approach</th>
+                                <th>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Responsive Design</td>
+                                <td>A single layout that automatically adjusts to fit the screen size</td>
+                            </tr>
+                            <tr>
+                                <td>Adaptive Design</td>
+                                <td>Uses several distinct layouts for different device classes</td>
+                            </tr>
+                            <tr>
+                                <td>Mobile First Design</td>
+                                <td>The design process starts with the mobile layout, then scales up to larger screens</td>
+                            </tr>
+                            <tr>
+                                <td>Progressive Enhancement</td>
+                                <td>Starts with a baseline of features for all devices and adds more advanced features for capable browsers</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>3.3 Interaction Design and UI Organization</h3>
+                    <p><strong>Interaction Design</strong> focuses on how a user engages with the system. It involves designing the behavior of elements like buttons, forms, and menus to make the user's journey feel smooth, natural, and intuitive.</p>
+                    
+                    <div class="key-point">
+                        <strong>Goal:</strong> To create a positive user experience (UX). If a user finds the website easy to operate, then the interaction design is successful.
+                    </div>
+
+                    <h4>User Interaction vs. User Interface Organization</h4>
+                    <div class="comparison">
+                        <div class="comparison-item">
+                            <h5>User Interaction</h5>
+                            <ul>
+                                <li>Describes how a user performs a task</li>
+                                <li>Based on user behavior and actions</li>
+                                <li><strong>Example:</strong> A user clicks a button, drags an item, or scrolls through a page</li>
+                            </ul>
+                        </div>
+                        <div class="comparison-item">
+                            <h5>User Interface Organization</h5>
+                            <ul>
+                                <li>Describes how elements are visually placed on the screen</li>
+                                <li>Based on visual structure and hierarchy</li>
+                                <li><strong>Example:</strong> The navigation bar is at the top, and the footer is at the bottom</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>3.4 Navigation Design and Link Representation</h3>
+                    
+                    <h4>Navigation Design</h4>
+                    <p>Navigation is the system that allows users to move from one page to another within a web application. Good navigation must be:</p>
+                    <ul>
+                        <li><strong>Simple:</strong> Easy to understand and use</li>
+                        <li><strong>Consistent:</strong> Appears in the same place and works the same way on every page</li>
+                        <li><strong>Easy:</strong> Users should find what they are looking for with minimal effort</li>
+                    </ul>
+
+                    <div class="example">
+                        <strong>Common Navigation Types:</strong>
+                        <ul>
+                            <li>Top Menu</li>
+                            <li>Sidebar</li>
+                            <li>Hamburger Menu (Mobile)</li>
+                            <li>Breadcrumbs (show user's current path)</li>
+                        </ul>
+                    </div>
+
+                    <h4>Link Representation</h4>
+                    <p>Links are the fundamental building blocks of navigation. To be effective, they should be:</p>
+                    <ul>
+                        <li><strong>Visible:</strong> Easily distinguishable from regular text (e.g., underlined blue text)</li>
+                        <li><strong>Clear:</strong> The link text should clearly indicate where the link will take the user</li>
+                        <li><strong>Descriptive:</strong> The text should be meaningful and provide context</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <p><strong>Good Example:</strong> ✔️ "Click here to view our courses"</p>
+                        <p><strong>Bad Example:</strong> ❌ "Click here"</p>
+                    </div>
+
+                    <h4>Link Internals</h4>
+                    <p>This concept defines the technical behavior of a link. It answers questions like:</p>
+                    <ul>
+                        <li>Does the link open in the same tab or a new tab?</li>
+                        <li>Does it scroll to a specific section on the page?</li>
+                        <li>Does it trigger an API call?</li>
+                    </ul>
+                    <p>This behavior is typically controlled using HTML attributes.</p>
+                </div>
+
+                <div class="section">
+                    <h3>3.5 Navigation, Orientation, and Structured Dialog</h3>
+                    
+                    <div class="comparison">
+                        <div class="comparison-item">
+                            <h5>Navigation</h5>
+                            <p>The act of moving across pages</p>
+                        </div>
+                        <div class="comparison-item">
+                            <h5>Orientation</h5>
+                            <p>The user's awareness of where they are currently on the site</p>
+                        </div>
+                    </div>
+
+                    <h4>Tools that Help with Orientation:</h4>
+                    <ul>
+                        <li>Page Titles</li>
+                        <li>Breadcrumbs (e.g., Home > Products > Laptops)</li>
+                        <li>Current page highlighted in navigation menu</li>
+                    </ul>
+
+                    <h4>Structured Dialog for Complex Activities</h4>
+                    <p>This involves breaking down a lengthy task into smaller, manageable steps to prevent user confusion and frustration.</p>
+                    
+                    <div class="example">
+                        <strong>Example: Multi-step Online Shopping Checkout</strong>
+                        <ol>
+                            <li>Add to Cart</li>
+                            <li>Enter Delivery Details</li>
+                            <li>Make Payment</li>
+                            <li>Receive Order Confirmation</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>3.6 Functional Design and its Relation to Technology</h3>
+                    <p><strong>Functional Design</strong> focuses on defining what the website should do. It outlines the application's features, actions, user tasks, and workflows.</p>
+                    
+                    <div class="example">
+                        <h4>E-Commerce Website Example</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Function</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Login/Signup</td>
+                                    <td>Manages user account creation and authentication</td>
+                                </tr>
+                                <tr>
+                                    <td>Add to cart</td>
+                                    <td>Allows users to store selected items for purchase</td>
+                                </tr>
+                                <tr>
+                                    <td>Payment</td>
+                                    <td>Handles the online transaction process</td>
+                                </tr>
+                                <tr>
+                                    <td>Order Tracking</td>
+                                    <td>Enables users to track the delivery status of their orders</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Technology and Architectural Style</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Technology</th>
+                                <th>Architectural Style</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>HTML + CSS + JS</td>
+                                <td>Client-Side Rendering</td>
+                                <td>React.js</td>
+                            </tr>
+                            <tr>
+                                <td>PHP / Node.js / Java</td>
+                                <td>Server-Side Rendering</td>
+                                <td>Laravel, Spring</td>
+                            </tr>
+                            <tr>
+                                <td>APIs</td>
+                                <td>Microservices</td>
+                                <td>Cloud-based web apps</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <div class="summary-box">
+                        <h4>3.7 Unit 3 Summary</h4>
+                        <table style="background: rgba(255,255,255,0.1);">
+                            <thead>
+                                <tr>
+                                    <th>Concept</th>
+                                    <th>Short Meaning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Device-Independent Dev</td>
+                                    <td>The practice of making a website run on any device</td>
+                                </tr>
+                                <tr>
+                                    <td>Interaction Design</td>
+                                    <td>Focuses on the user's behavior and interaction with the site</td>
+                                </tr>
+                                <tr>
+                                    <td>UI Organization</td>
+                                    <td>The visual arrangement of elements on the screen</td>
+                                </tr>
+                                <tr>
+                                    <td>Navigation Design</td>
+                                    <td>The plan for how users move between pages</td>
+                                </tr>
+                                <tr>
+                                    <td>Link Representation</td>
+                                    <td>The practice of designing links to be clear and descriptive</td>
+                                </tr>
+                                <tr>
+                                    <td>Structured Dialog</td>
+                                    <td>Breaking down complex tasks into smaller, manageable steps</td>
+                                </tr>
+                                <tr>
+                                    <td>Functional Design</td>
+                                    <td>Planning what tasks and functions the website will perform</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UNIT 4 -->
+            <div class="unit" id="unit4">
+                <div class="unit-header">
+                    <h2>Unit 4: Testing Web Applications</h2>
+                    <p>Ensuring Quality, Performance, and Security</p>
+                </div>
+
+                <div class="section">
+                    <h3>4.1 The Critical Role of Testing</h3>
+                    <p>Testing is a crucial phase in the web engineering lifecycle, designed to verify that an application meets its requirements before it is released to users. It is the systematic process of ensuring that the application is correct, functional, performant, compatible, and secure.</p>
+                    
+                    <div class="key-point">
+                        <strong>In Simple Terms:</strong> Testing means checking the website to ensure everything is working correctly and to find any errors or security problems.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>4.2 Fundamentals and Specifics of Web Testing</h3>
+                    <p>Because web applications run over the internet on multiple browsers and devices, testing must cover several fundamental aspects.</p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Functionality</td>
+                                <td>Verifying that all features and functions work as intended</td>
+                            </tr>
+                            <tr>
+                                <td>Usability</td>
+                                <td>Ensuring the website is easy to use and navigate</td>
+                            </tr>
+                            <tr>
+                                <td>Compatibility</td>
+                                <td>Checking that the application works correctly across all major devices and browsers</td>
+                            </tr>
+                            <tr>
+                                <td>Performance</td>
+                                <td>Making sure the website loads quickly and responds promptly to user actions</td>
+                            </tr>
+                            <tr>
+                                <td>Security</td>
+                                <td>Confirming that the application is safe from common cyber attacks</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="highlight-box">
+                        <h4>Testing Specifics for Web Applications:</h4>
+                        <ul>
+                            <li>Rigorously testing database interactions</li>
+                            <li>Ensuring security and access controls are effective</li>
+                            <li>Verifying load and performance under varying levels of user traffic</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>4.3 Testing Approaches and Core Concepts</h3>
+                    
+                    <h4>Testing Approaches</h4>
+                    <div class="comparison">
+                        <div class="comparison-item">
+                            <h5>Conventional Approach</h5>
+                            <ul>
+                                <li>Follows a "waterfall" model</li>
+                                <li>Testing is performed after the development phase is complete</li>
+                                <li>Feedback is slow, and fixing bugs can be costly</li>
+                            </ul>
+                        </div>
+                        <div class="comparison-item">
+                            <h5>Agile Approach</h5>
+                            <ul>
+                                <li>Testing occurs in parallel with development</li>
+                                <li>Provides fast and continuous feedback</li>
+                                <li>Supports iterative improvement and reduces costs</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h4>Core Testing Concepts</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Concept</th>
+                                <th>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Verification</td>
+                                <td>Answers the question, "Are we building the product correctly?" (Does it meet technical specs?)</td>
+                            </tr>
+                            <tr>
+                                <td>Validation</td>
+                                <td>Answers the question, "Are we building the correct product?" (Does it meet user needs?)</td>
+                            </tr>
+                            <tr>
+                                <td>Bug/Defect</td>
+                                <td>An error in the code that causes incorrect or unexpected behavior</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>4.4 The Testing Process and Test Plan</h3>
+                    
+                    <div class="highlight-box">
+                        <h4>Structured Testing Process</h4>
+                        <p style="text-align: center; font-size: 1.1rem; font-weight: bold;">
+                            Requirement → Test Planning → Test Case Designing → Test Execution → Bug Reporting → Re-testing → Final Review
+                        </p>
+                    </div>
+
+                    <h4>Test Scheme (Test Plan)</h4>
+                    <p>This formal document outlines the entire testing strategy, including:</p>
+                    <ul>
+                        <li>What to test</li>
+                        <li>How to test it</li>
+                        <li>The tools required</li>
+                        <li>Team responsibilities</li>
+                        <li>Project timeline</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3>4.5 Core Testing Methods and Techniques</h3>
+                    
+                    <h4>Link Testing</h4>
+                    <div class="highlight-box">
+                        <p><strong>Definition:</strong> Checks all hyperlinks on the website to ensure they are working correctly</p>
+                        <p><strong>Goal:</strong> To find broken links and verify that all links point to the correct pages</p>
+                        <p><strong>Tool:</strong> W3C Link Checker</p>
+                    </div>
+
+                    <h4>Browser Compatibility Testing</h4>
+                    <div class="highlight-box">
+                        <p><strong>Definition:</strong> Ensures the website functions and displays correctly on various web browsers like Chrome, Firefox, Safari, and Edge</p>
+                        <p><strong>Goal:</strong> To provide a consistent user experience regardless of the user's browser choice</p>
+                        <p><strong>Tool:</strong> BrowserStack, LambdaTest</p>
+                    </div>
+
+                    <h4>Usability Testing</h4>
+                    <div class="highlight-box">
+                        <p><strong>Definition:</strong> Evaluates how easy and intuitive the website is to use for a typical user</p>
+                        <p><strong>Goal:</strong> To identify confusing navigation, unclear instructions, and other issues to improve the overall User Experience (UX)</p>
+                    </div>
+
+                    <h4>Load Testing</h4>
+                    <div class="highlight-box">
+                        <p><strong>Definition:</strong> Measures the application's performance under a normal, expected load (e.g., 500 simultaneous users)</p>
+                        <p><strong>Goal:</strong> To ensure the application remains stable and responsive during typical traffic conditions</p>
+                    </div>
+
+                    <h4>Stress Testing</h4>
+                    <div class="highlight-box">
+                        <p><strong>Definition:</strong> Pushes the application beyond its maximum capacity to see how it behaves under extreme conditions (e.g., 10,000 simultaneous users)</p>
+                        <p><strong>Goal:</strong> To identify the application's breaking point and how it recovers from failure</p>
+                    </div>
+
+                    <h4>Continuous Testing</h4>
+                    <div class="highlight-box">
+                        <p><strong>Definition:</strong> The practice of performing automated tests continuously throughout the development process, often integrated into a DevOps pipeline</p>
+                        <p><strong>Goal:</strong> To get immediate feedback on code changes and catch bugs early</p>
+                        <p><strong>Tools:</strong> Jenkins, GitHub Actions</p>
+                    </div>
+
+                    <h4>Security Testing</h4>
+                    <div class="highlight-box">
+                        <p><strong>Definition:</strong> Identifies vulnerabilities and weaknesses that could be exploited by attackers</p>
+                        <p><strong>Goal:</strong> To protect the website and its data from threats like SQL Injection, Cross-Site Scripting (XSS), and unsecured authentication</p>
+                    </div>
+
+                    <h4>Test-Driven Development (TDD)</h4>
+                    <div class="highlight-box">
+                        <p><strong>Definition:</strong> A development methodology where tests are written before the code that implements the feature</p>
+                        <p><strong>Process:</strong> Write a failing test → Write the code to make the test pass → Refactor the code → Repeat</p>
+                        <p><strong>Goal:</strong> To produce code with fewer bugs and a more robust, testable structure</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="summary-box">
+                        <h4>4.6 Unit 4 Summary</h4>
+                        <table style="background: rgba(255,255,255,0.1);">
+                            <thead>
+                                <tr>
+                                    <th>Term</th>
+                                    <th>Simple Meaning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Link Testing</td>
+                                    <td>Checking that all hyperlinks work correctly</td>
+                                </tr>
+                                <tr>
+                                    <td>Browser Testing</td>
+                                    <td>Ensuring the website works in every major browser</td>
+                                </tr>
+                                <tr>
+                                    <td>Usability Testing</td>
+                                    <td>Verifying that the website is easy to use</td>
+                                </tr>
+                                <tr>
+                                    <td>Load Testing</td>
+                                    <td>Checking performance under expected user traffic</td>
+                                </tr>
+                                <tr>
+                                    <td>Stress Testing</td>
+                                    <td>Checking performance under extreme user traffic</td>
+                                </tr>
+                                <tr>
+                                    <td>Security Testing</td>
+                                    <td>Protecting the application from hackers and vulnerabilities</td>
+                                </tr>
+                                <tr>
+                                    <td>TDD</td>
+                                    <td>A development practice where tests are written before the code</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UNIT 5 -->
+            <div class="unit" id="unit5">
+                <div class="unit-header">
+                    <h2>Unit 5: Promoting Web Applications and Project Management</h2>
+                    <p>Launch, Promotion, and Managing the Entire Project</p>
+                </div>
+
+                <div class="section">
+                    <h3>5.1 Introduction to Launch and Promotion</h3>
+                    <p>Developing and testing a web application is only part of the journey. The final and equally important step is launching and promoting it to ensure that users can find, access, and use it.</p>
+                    
+                    <div class="key-point">
+                        <strong>Key Point:</strong> Effective promotion is essential for making the application visible online, increasing user traffic, and building brand value and trust.
+                    </div>
+
+                    <div class="highlight-box">
+                        <p><strong>In Simple Terms:</strong> Once your website is ready, it's useless if no one knows it exists. That's why you need to promote the application to reach your audience.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>5.2 Launch Challenges and Promotion Strategies</h3>
+                    
+                    <h4>Challenges in Launching Web Applications</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Challenge</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Competition</td>
+                                <td>The market may already be saturated with similar websites and applications</td>
+                            </tr>
+                            <tr>
+                                <td>Budget Limitations</td>
+                                <td>Marketing and promotional activities require a significant financial investment</td>
+                            </tr>
+                            <tr>
+                                <td>Performance Issues</td>
+                                <td>A sudden surge in traffic after launch can slow down the application or cause it to crash</td>
+                            </tr>
+                            <tr>
+                                <td>Security Risks</td>
+                                <td>A public launch increases the risk of data theft and hacking attempts</td>
+                            </tr>
+                            <tr>
+                                <td>User Acceptance</td>
+                                <td>Convincing users that the application is useful and trustworthy can be difficult</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Methods of Promotion</h4>
+                    <div class="highlight-box">
+                        <ul>
+                            <li><strong>Search Engine Optimization (SEO):</strong> Optimizing the website to rank higher in Google search results</li>
+                            <li><strong>Social Media Marketing (SMM):</strong> Using platforms like Instagram, Facebook, and LinkedIn for advertising and engagement</li>
+                            <li><strong>Content Marketing:</strong> Creating valuable content like blogs, videos, and tutorials to attract and educate an audience</li>
+                            <li><strong>Email Marketing:</strong> Sending newsletters and promotional campaigns directly to users' inboxes</li>
+                            <li><strong>Influencer Collaboration:</strong> Partnering with influencers and tech reviewers to promote the application to their followers</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>5.3 Content Management and Usage Analysis</h3>
+                    
+                    <h4>Content Management</h4>
+                    <p>The process of handling all the content on a web application, including text, images, videos, blogs, and user feedback. This is often managed using a <strong>Content Management System (CMS)</strong> like WordPress or Joomla.</p>
+
+                    <h4>Usage Analysis</h4>
+                    <p>Involves monitoring and analyzing user behavior to understand how people interact with the application. This includes tracking metrics like:</p>
+                    <ul>
+                        <li>Number of visitors</li>
+                        <li>Most visited pages</li>
+                        <li>User location</li>
+                        <li>On-site actions</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <p><strong>Tools:</strong> Google Analytics, Hotjar</p>
+                        <p><strong>Goal:</strong> To use data-driven insights to improve the website and user experience</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>5.4 Web Project Management Fundamentals</h3>
+                    <p><strong>Web Project Management</strong> is the process of properly managing the planning, scheduling, teamwork, communication, and risk control involved in building a web application. It ensures that the project is completed on time, within budget, and to the required quality standards.</p>
+
+                    <h4>Challenges in Web Project Management</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Issue</th>
+                                <th>Explanation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Unclear Requirements</td>
+                                <td>The client's needs can change frequently throughout the project</td>
+                            </tr>
+                            <tr>
+                                <td>Changing Technology</td>
+                                <td>Development tools and frameworks are updated rapidly</td>
+                            </tr>
+                            <tr>
+                                <td>Time Pressure</td>
+                                <td>Delivery schedules and deadlines are often very tight</td>
+                            </tr>
+                            <tr>
+                                <td>Team Skill Gap</td>
+                                <td>Not every developer on the team may be an expert in all required technologies</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>5.5 Managing the Team, Process, and Risks</h3>
+                    
+                    <h4>Managing Web Team</h4>
+                    <p>A typical web team includes roles like:</p>
+                    <ul>
+                        <li>UI/UX Designer</li>
+                        <li>Frontend Developer</li>
+                        <li>Backend Developer</li>
+                        <li>Database Admin</li>
+                        <li>Tester</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <p><strong>Good Management Requires:</strong></p>
+                        <ul>
+                            <li>Clear communication</li>
+                            <li>Defined task assignments</li>
+                            <li>Use of collaboration tools like Trello, Slack, and Jira</li>
+                        </ul>
+                    </div>
+
+                    <h4>Managing the Development Process</h4>
+                    <p>This involves following a structured workflow:</p>
+                    <div class="key-point">
+                        <p style="text-align: center; font-weight: bold;">
+                            Requirement → Design → Development → Testing → Deployment → Maintenance
+                        </p>
+                    </div>
+                    <p>Embracing an iterative process that allows for fast updates and improvements.</p>
+
+                    <h4>Risk Management</h4>
+                    <p>A <strong>risk</strong> is any potential event that could lead to loss or project failure, such as:</p>
+                    <ul>
+                        <li>Security attacks</li>
+                        <li>Server crashes</li>
+                        <li>Budget overruns</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <p><strong>The Process Involves:</strong></p>
+                        <ol>
+                            <li>Identifying potential risks</li>
+                            <li>Analyzing their severity</li>
+                            <li>Preparing a mitigation or backup plan</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>5.6 Managing Schedule, Quality, Change, and Tracking</h3>
+                    
+                    <h4>Developing a Schedule</h4>
+                    <p>This involves planning the timeline for all project tasks to avoid delays and improve efficiency.</p>
+                    <div class="example">
+                        <p><strong>Tools:</strong> Gantt Charts, Agile Sprint Boards</p>
+                    </div>
+
+                    <h4>Managing Quality</h4>
+                    <p>In a web application, quality means:</p>
+                    <ul>
+                        <li>Bug-free</li>
+                        <li>Fast</li>
+                        <li>Easy to use</li>
+                        <li>Mobile-responsive</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <p><strong>Quality is Ensured Through:</strong></p>
+                        <ul>
+                            <li>Rigorous testing</li>
+                            <li>Code reviews</li>
+                            <li>Continuous UI/UX improvements</li>
+                        </ul>
+                    </div>
+
+                    <h4>Managing Change</h4>
+                    <p>Client requirements often change during a project. These changes must be managed systematically using:</p>
+                    <ul>
+                        <li><strong>Version Control</strong> (e.g., Git)</li>
+                        <li><strong>Agile Development</strong> methodologies, which are designed to accommodate shifting priorities</li>
+                    </ul>
+
+                    <h4>Tracking the Project</h4>
+                    <p>Project progress must be tracked consistently to ensure it stays on schedule and meets its goals.</p>
+                    <div class="example">
+                        <p><strong>Tools:</strong> Jira, Asana, Trello</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>5.7 Introduction to Modern Backend Technologies</h3>
+                    
+                    <h4>Node.js</h4>
+                    <p><strong>Node.js</strong> is a server-side JavaScript runtime environment. It allows developers to write backend code using JavaScript, the same language used for frontend development.</p>
+                    
+                    <div class="highlight-box">
+                        <h5>Key Benefits:</h5>
+                        <ul>
+                            <li>Fast, non-blocking I/O model</li>
+                            <li>Highly efficient</li>
+                            <li>Well-suited for real-time applications like chat apps and live notifications</li>
+                        </ul>
+                    </div>
+
+                    <div class="key-point">
+                        <strong>In Simple Terms:</strong> With Node.js, backend coding can be done in JavaScript.
+                    </div>
+
+                    <h4>WebSockets</h4>
+                    <p><strong>WebSockets</strong> are a communication protocol that enables real-time, two-way communication between a client (browser) and a server over a single, long-lived connection.</p>
+                    
+                    <div class="example">
+                        <h5>Essential for Applications Requiring Instant Data Exchange:</h5>
+                        <ul>
+                            <li>Chat applications like WhatsApp web</li>
+                            <li>Live notifications</li>
+                            <li>Multiplayer online games</li>
+                            <li>Live stock market trackers</li>
+                            <li>Collaborative editing tools like Google Docs</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="summary-box">
+                        <h4>5.8 Unit 5 Summary</h4>
+                        <table style="background: rgba(255,255,255,0.1);">
+                            <thead>
+                                <tr>
+                                    <th>Topic</th>
+                                    <th>Key Point</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Promotion</td>
+                                    <td>The process of increasing user reach and making the application visible</td>
+                                </tr>
+                                <tr>
+                                    <td>Content Management</td>
+                                    <td>Organizing and handling all content (text, images, video) on the site</td>
+                                </tr>
+                                <tr>
+                                    <td>Usage Analysis</td>
+                                    <td>The study of user behavior to improve the application</td>
+                                </tr>
+                                <tr>
+                                    <td>Project Management</td>
+                                    <td>The practice of managing the team, tasks, and timeline of a project</td>
+                                </tr>
+                                <tr>
+                                    <td>Risk Management</td>
+                                    <td>Identifying and creating plans to control potential project failures</td>
+                                </tr>
+                                <tr>
+                                    <td>Node.js</td>
+                                    <td>A technology for writing server-side code using JavaScript</td>
+                                </tr>
+                                <tr>
+                                    <td>WebSockets</td>
+                                    <td>A protocol that enables real-time data exchange between client and server</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Summary Section -->
+            <div class="section" style="margin-top: 3rem;">
+                <div class="summary-box">
+                    <h2 style="color: white; text-align: center; margin-bottom: 2rem;">🎓 Complete Course Summary</h2>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <h4 style="color: white;">Unit 1: Introduction to Web Engineering</h4>
+                        <p>Systematic approach to web development focusing on quality, security, performance, and scalability. Understanding static vs dynamic pages, web design vs development, and APIs.</p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <h4 style="color: white;">Unit 2: Web Application Design</h4>
+                        <p>Planning structure and user experience through various models: content, navigation, presentation, interaction, and configuration models. Evolution from static HTML to AI-driven applications.</p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <h4 style="color: white;">Unit 3: Development Concepts</h4>
+                        <p>Device-independent development, interaction design, navigation design, and functional design. Building responsive applications that work seamlessly across all devices.</p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <h4 style="color: white;">Unit 4: Testing Web Applications</h4>
+                        <p>Comprehensive testing including link testing, browser compatibility, usability, load/stress testing, security testing, and Test-Driven Development (TDD).</p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="color: white;">Unit 5: Promoting & Project Management</h4>
+                        <p>Launch strategies, promotion methods (SEO, SMM, content marketing), project management fundamentals, team management, risk management, and modern backend technologies (Node.js, WebSockets).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 3rem; background: #f8f9fa; border-radius: 10px; margin-top: 3rem;">
+                <h2 style="color: #1e3c72; margin-bottom: 1rem;">🎯 Good Luck with Your Studies!</h2>
+                <p style="font-size: 1.1rem; color: #555;">You've covered all five units of Web Engineering. Review the concepts regularly and practice building real projects to solidify your understanding.</p>
+            </div>
+        </main>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            sidebar.classList.toggle('hidden');
+            content.classList.toggle('expanded');
+        }
+
+        // Smooth scroll
+        function smoothScroll(id) {
+            const element = document.getElementById(id);
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+
+            // Show/hide scroll to top button
+            const scrollTop = document.getElementById('scrollTop');
+            if (winScroll > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Active navigation highlighting
+        const sections = document.querySelectorAll('.unit');
+        const navLinks = document.querySelectorAll('.sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Mobile responsive sidebar
+        if (window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.add('hidden');
+            document.getElementById('content').classList.add('expanded');
+        }
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
